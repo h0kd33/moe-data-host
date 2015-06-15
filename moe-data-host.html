@@ -1,0 +1,19 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-jsonp-library/iron-jsonp-library.html">
+<link rel="import" href="../moe-style/moe-style.html">
+<dom-module id="moe-data-host">
+    <template>
+        <iron-jsonp-library 
+        library-url="http://beta.json-generator.com/api/json/get/C-yB2i8?callback=%%callback%%" 
+        callback-name="callback"> </iron-jsonp-library>
+    </template>
+</dom-module>
+<script>
+
+Polymer({
+
+    is: 'moe-data-host',
+
+    properties: {}
+});
+</script>
