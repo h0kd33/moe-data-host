@@ -3,8 +3,9 @@
 <script src="../bower_components/underscore/underscore-min.js"></script>
 <dom-module id="moe-data-host">
     <template>
-        <iron-jsonp-library id="jsonp" library-url="http://more.handlino.com/sentences.json?n=25&callback=%%callback%%">
-        </iron-jsonp-library>
+        <!-- 中文廢文產生 : JSONP -->
+        <!-- <iron-jsonp-library id="jsonp" library-url="http://more.handlino.com/sentences.json?n=100&callback=%callback%" notify-event="cht-callback-event">
+        </iron-jsonp-library> -->
     </template>
 </dom-module>
 <script>
@@ -14,143 +15,153 @@ Polymer({
 
     properties: {
         datas: {
-            type: Array,
+            type: Object,
             notify: true,
             readOnly: true
         },
-        ironback: {
-            type: Object
+        callback: {
+            type: Array
+        },
+        loading: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
         }
     },
-    ready: function() {
-        /**
-        Polymer.dom(this.root).insertBefore( 
-            this.create('script', {"src": "http://more.handlino.com/sentences.json?n=25&callback=callback"})
-        );*/
-        var obj = [{
-            serial: 54764654,
-            identity: 'dIW12Afc',
-            commentTitle: "不會游泳怎麼辦?",
-            username: "無名",
-            content: '<a href="http://homu.komica.org/00/index.php?res=6503972">http://homu.komica.org/00/index.php?res=6503972</a><br><blockquote>會說初音過氣八成對這塊認識也不深</blockquote>有什麼數據來證明初音還沒過氣阿?<br>新投稿的作品數和再生數都逐年激減了耶<br> 布丁好吃',
-            comments: [{
-                serial: 123456,
-                commentTitle: "不會游泳怎麼辦?",
-                userName: "無名",
-                content: '<a href="http://homu.komica.org/00/index.php?res=6503972">http://homu.komica.org/00/index.php?res=6503972</a><br><blockquote>會說初音過氣八成對這塊認識也不深</blockquote>有什麼數據來證明初音還沒過氣阿?<br>新投稿的作品數和再生數都逐年激減了耶<br> 布丁好吃',
-                imgNo: "01",
-                identity: 'dIW12Afc'
-            }, {
-                serial: 123456,
-                commentTitle: "不會游泳怎麼辦?",
-                userName: "無名",
-                content: "<a class='post-number'>NO.1234</a>不會游泳，現在要進去海陸新訓了........<br>覺這一年當兵生活會很慘",
-                imgNo: "01",
-                identity: 'ASss2afc'
-            }, {
-                serial: 45623,
-                commentTitle: "ㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZㄈㄓZ",
-                userName: "ㄈㄓZ",
-                content: "李嫌和王女原本約在高鐵台南站見面，因鄰居發現王母失蹤",
-                imgNo: "02",
-                identity: 'sSoa!eW',
-                CLASS: "highlight"
-            }, {
-                serial: "78,645,456",
-                commentTitle: "",
-                userName: "",
-                content: "外來種賤女狗公惱羞開始血尿跳針哭哭ㄛwwwwww<br>護航乙",
-                imgNo: "03",
-                identity: 'dIW12Afc'
-            }, {
-                serial: 456456,
-                commentTitle: "",
-                userName: "",
-                content: "<blockquote>搞不好李搞不好李搞不好李搞不好李搞不好李搞</blockquote>不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李w好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李搞不好李嫌跟王女真的有交往過<br>因為某某原因而否認了<br>就跟以前認識某女明明就有暗示我告白<br>結果我沒告白就到處抹黒我說我有嚴重妄想症一樣",
-                imgNo: "04",
-                identity: 'dIgFasd'
-            }, {
-                serial: 353453,
-                commentTitle: "",
-                userName: "",
-                content: "無本文",
-                imgNo: "15",
-                identity: 'dIW12Afc',
-            }, {
-                serial: 453,
-                commentTitle: "",
-                userName: "",
-                content: "<a href='#'>www.google.com</a>為什麼支那賤畜一聽到台灣女生說話就射啦<br>我剛剛無聊上百度搜尋台灣女生，發現很多426很哈台灣的劍",
-                imgNo: "16",
-                identity: 'ASss2afc'
-            }, {
-                serial: 123456,
-                commentTitle: "",
-                userName: "",
-                content: "問一下 問答板為什麼只能設3個問題? 我看其他人都25題耶",
-                imgNo: "17",
-                identity: 'ASss2afc'
-            }, {
-                serial: 453453,
-                commentTitle: "",
-                userName: "",
-                content: "有島民學過速讀嗎?<br>我想要自學卻不知道要怎麼入門",
-                imgNo: "18",
-            }, {
-                serial: 51245,
-                commentTitle: "",
-                userName: "",
-                content: "有島民知道拿熱水沖屁眼完5分鐘在拿冷水沖是什麼感覺嗎",
-                imgNo: "",
-                identity: 'aSASFDSSc'
-            }, {
-                serial: 7857853435,
-                commentTitle: "",
-                userName: "",
-                content: "有什麼地方可以吹冷氣又有插座?",
-                imgNo: "20",
-                identity: 'QewAafc'
-            }]
-        }];
+    listeners: {
+        "jsonp.cht-callback-event": "_chtCallback"
+    },
+    _buildData: function() {
+        this.loading = true;
+        var obj = {
+            boardSerial: "111",
+            boardName: "綜合二",
+            defaultUserName: "無名氏",
+            defaultTitle: "無標題",
+            articles: [{
+                // Article Start
+                articleSerial: "1234",
+                postTime: 1435985292714,
+                user: {
+                    ip: "192.168.*.*",
+                    identity: 'dIW12Afc',
+                    articleTitle: "不會游泳怎麼辦?",
+                    userName: ""
+                },
+                articleTitle: "",
+                content: "",
+                imgSrc: "http://lorempixel.com/50/50/cats",
+                videoSrc: [{ /* ... videos */ }],
+                voteData: [{ /* ... vote */ }],
+                score: {
+                    voted: true,
+                    scorePoint: 15
+                },
+                comments: [{
+                    // Comment Start
+                    commentSerial: "1234",
+                    user: {
+                        postTime: 1435985292714,
+                        ip: "192.168.*.*",
+                        identity: 'dIW12Afc',
+                        userName: ""
+                    },
+                    commentTitle: "不會游泳怎麼辦?",
+                    content: '<a href="http://homu.komica.org/00/index.php?res=6503972">http://homu.komica.org/00/index.php?res=6503972</a><br><blockquote>會說初音過氣八成對這塊認識也不深</blockquote>有什麼數據來證明初音還沒過氣阿?<br>新投稿的作品數和再生數都逐年激減了耶<br> 布丁好吃',
+                    imgSrc: "http://lorempixel.com/50/50/cats",
+                    pushes: [{
+                        // Push Start
+                        pushSerial: "1234",
+                        postTime: 1435985292714,
+                        user: {
+                            ip: "192.168.*.*",
+                            identity: "dEaGdaAS"
+                        },
+                        kaomoji: "ξ( ✿＞◡❛)▄︻▇▇〓",
+                        kaote: "▄︻┻┳═一",
+                        content: "西瓜哥真的超好笑 幽默又風趣"
+                    }, { /* ... more push */ }]
+                }, { /* ... more comment */ }]
+            }, { /* ... more article */ }]
+        };
 
 
+        this._setDatas(obj);
+        this.loading = false;
+
+
+    },
+    /* Method */
+    loadPartial: function() {},
+    loadFull: function() {},
+    ready: function() {},
+    /* 產生測試資料, 撰寫中 .... */
+    __building__: function() {
         function random(max, min) {
             return Math.floor(Math.random() * max + min);
         }
 
-        // commnets -> 插入隨機大小圖片
-        obj[0].comments.forEach(function(e) {
-            var host = "http://lorempixel.com/";
-            var dise = Math.random() * 1;
-            if (dise >= 0.75) {
-                e.imgsrc = host + random(150, 50) + "/" + random(150, 50) + "/cats";
-            } else {
-                return undefined;
-            }
-        });
+
         // repeat Article
-        var repeat = 7;
+        var repeat = 15;
         obj[0].imgSrc = "http://lorempixel.com/" + random(350, 50) + "/" + random(350, 50) + "/cats";
         for (var i = 0; i < repeat; i++) {
             var lorem = "http://lorempixel.com/" + random(350, 50) + "/" + random(350, 50) + "/cats";
             var newobj = _.clone(obj[0]);
-            newobj.imgSrc = lorem;
+            if (_.random(0, 2) !== 0) {
+                newobj.imgSrc = lorem;
+            } else {
+                newobj.imgSrc = "";
+            }
+
+            // remove random number of comments
+            var j = _.random(0, 10);
+            var newComments = _.clone(obj[0].comments);
+            for (j; j > 0; j--) {
+                newComments.splice(_.random(0, newComments.length), 1);
+            }
+            // add random image 
+            for (var k = 0; k < newComments.length; k++) {
+                var imgsrc = "http://lorempixel.com/" + random(150, 20) + "/" + random(150, 20) + "/cats";
+                if (_.random(0, 2) === 0) {
+                    newComments[k].imgSrc = imgsrc;
+                } else {
+                    newComments[k].imgSrc = "";
+
+                }
+            }
+            // assign
+            newobj.comments = newComments;
+
             obj.push(newobj);
         }
-        this._setDatas(obj);
 
-        // 用 fetch 來獲取json-gen的資料
-
-        fetch("http://beta.json-generator.com/api/json/get/JhsqrBk")
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(json) {
-                // console.log(json);
-            });
-
-
-
-    }
+    },
+    __makeId: function(length) {
+        // default 8
+        length = typeof length !== 'undefined' ? length : 8;
+        var id = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < length; i++)
+            id += possible.charAt(Math.floor(Math.random() * possible.length));
+        return id;
+    },
+    __chtCallback: function(e) {
+        // 接受 iron jsonp callback notify-event
+        this.callback = e.detail[0].sentences;
+        console.log("iron jsonp Loaded");
+        this._bindingChtCallback();
+    },
+    __bindingChtCallback: function() {
+        for (var i = 0; i < this.datas.length; i++) {
+            var target = "datas." + i + ".content";
+            // Polymer Method 
+            // 只要使用 sub properties 更改資料時就必須使用 notifyPath or set method 
+            // 不然 dom-repeat 之類的 data-binding 不會更新
+            this.datas[i].content = this.callback[i];
+            this.notifyPath(target, this.callback[i]);
+        }
+        console.log("callback binded");
+    },
 });
 </script>
