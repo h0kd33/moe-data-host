@@ -92,10 +92,21 @@ Polymer({
 
     },
     /* Method */
-    loadPartial: function() {},
-    loadFull: function() {},
+    // 讀取版面資料
+    loadBoardInfo: function() {},
+    // 讀取部分資料 ( ex: 前三筆)
+    /** 
+    *   Example
+    *   this.loadPartial( "article", "1234", 3) return 前三筆
+    */
+    loadPartial: function(target, serial, number) {
+
+
+    },
+    // 讀取完整資料
+    loadFull: function(target, serial) {},
     ready: function() {},
-    /* 產生測試資料, 撰寫中 .... */
+    /* 產生測試資料, 其他 .... */
     __building__: function() {
         function random(max, min) {
             return Math.floor(Math.random() * max + min);
