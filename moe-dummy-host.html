@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-jsonp-library/iron-jsonp-library.html">
+<script src="../bower_components/lodash/lodash.min.js"></script>
+<dom-module id="moe-dummy-host">
+    <template>
+        <template is="dom-if" if="{{_trigger}}">
+            <iron-jsonp-library id="jsonp" library-url="http://more.handlino.com/sentences.json?corpus=nextmedia&n=100&callback=%%callback%%" notify-event="chtcallback-event" on-chtcallback-event="_chtCallback"></iron-jsonp-library>
+        </template>
+    </template>
+</dom-module>
+<script>
+Polymer({
+
+    is: 'moe-dummy-host',
+    properties: {
+        datas: {
+            type: Object,
+            notify: true,
+            readOnly: true
+        },
+        dummyDatas: {
+            type: Object
+        },
+        chtDatas: {
+            type: Array
+        },
+        loading: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+        },
+        autoStart: {
+            type: Boolean,
+            observer: "_autoStart"
+        },
+        _trigger: {
+            type: Boolean,
+            value: false
+        }
+    },
+    _autoStart: function(e){       
+        return e ? this._start() : undefined ;
+    },
+    _start: function() {
+        // note
+        /*
+            1 確認兩個來源讀入
+            2 將中文資料塞入 json.gen 資料中
+            3 將完成後的資料塞進 datas
+        */   
+        if ( typeof this.dummyDatas !== "undefined") return console.log( "[*] Data has been loaded");
+        this.loading = true;    
+        this._trigger = true;     
+        var that = this;
+        var j = 0;
+        function loop() {
+            setTimeout(
+                function(t) {
+                    if (typeof this.chtDatas === "undefined" && j < t) {
+                        console.log("loading chtDatas..." + j);
+                        loop();
+                        j++;
+                        return;
+                    }
+                    console.log("load complete!");
+                }, 100);
+        }
+        _.bind( loop, this.properties , 100);
+    },
+    _chtCallback: function(e) {     
+        // 接受 iron jsonp callback notify-event   
+        var data = this.chtDatas;
+        data = e.detail[0].sentences;
+        // "換行" 取代 "逗點"
+        for (var i = 0; i < data.length; i++) {
+            data[i] = data[i].replace(/，/g, "<br>");
+        }
+        this.chtDatas = data;
+        console.log("[取得中文資料] chtDatas generated");
+        this._fetch();
+    },
+    _fetch: function() {
+        // 取得json資料
+        var that = this;
+        fetch("http://beta.json-generator.com/api/json/get/C-yB2i8")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(json) {
+                that.dummyDatas = json[0];
+                console.log("[取得JsonGen資料] dummyDatas fetch get complete");
+                that._build();
+            });
+    },
+    /* 產生測試資料 */
+    _build: function() {
+        // 插入中文資料
+        var that = this;
+        _.findKey( this.dummyDatas.articles, function(chr){
+            chr.content = that.chtDatas[_.random(0,29)];
+            _.findKey( chr.comments, function(chr) {
+                chr.content = that.chtDatas[_.random(30,59)];
+                _.findKey( chr.pushes, function(chr) {
+                    chr.content = that.chtDatas[_.random(60,99)];
+                } );
+            } );
+        });
+        console.log( "[處理資料] build complete");
+        this.datas = this.dummyDatas;
+        this.notifyPath( "datas" , this.dummyDatas);
+        console.log( "[處理資料] inject this.datas complete");
+        this.loading = false;
+    },
+    /* Method */
+    // 讀取版面資料
+    loadBoardInfo: function() {},
+    // 讀取部分資料 ( ex: 前三筆)
+    /** 
+     *   Example
+     *   this.loadPartial( "article", "1234", 3) return 前三筆
+     */
+    loadPartial: function(target, serial, number) {
+
+
+    },
+    // 讀取完整資料
+    loadFull: function(target, serial) {},
+});
+</script>
