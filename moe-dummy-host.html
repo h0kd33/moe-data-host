@@ -13,26 +13,44 @@ Polymer({
 
     is: 'moe-dummy-host',
     properties: {
+        /**
+        *   輸出資料
+        */
         datas: {
             type: Object,
             notify: true,
             readOnly: true
         },
+        /**
+        *   從 json generator 取得的資料
+        */
         dummyDatas: {
             type: Object
         },
+        /**
+        *   從 jsonp 取得的中文資料
+        */
         chtDatas: {
             type: Array
         },
+        /**
+        *   資料讀取中的狀態
+        */
         loading: {
             type: Boolean,
             value: false,
             reflectToAttribute: true
         },
+        /**
+        *   自動開始取得資料
+        */
         autoStart: {
             type: Boolean,
             observer: "_autoStart"
         },
+        /**
+        *   trigger dom-if to render iron-jsonp element
+        */
         _trigger: {
             type: Boolean,
             value: false
@@ -94,9 +112,14 @@ Polymer({
             chr.content = that.chtDatas[_.random(0,29)];
             _.findKey( chr.comments, function(chr) {
                 chr.content = that.chtDatas[_.random(30,59)];
-                _.findKey( chr.pushes, function(chr) {
-                    chr.content = that.chtDatas[_.random(60,99)];
-                } );
+                if( _.random(0,2) === 0 ){ 
+                    _.findKey( chr.pushes, function(chr) {                    
+                        var text = that.chtDatas[_.random(60,99)].slice(0, _.random(10, 80 ));
+                        chr.content = text;                    
+                    } );
+                } else {
+                    chr.pushes = [];
+                }
             } );
         });
         console.log( "[處理資料] build complete");
