@@ -38,34 +38,26 @@ Polymer({
             value: false
         }
     },
+    /**
+    * moe-dummy-host 插入後自動開始讀取資料
+    */
     _autoStart: function(e){       
+
         return e ? this._start() : undefined ;
     },
+
+    /**
+    * moe-dummy-host 插入後自動開始讀取資料
+    */
     _start: function() {
-        // note
-        /*
-            1 確認兩個來源讀入
-            2 將中文資料塞入 json.gen 資料中
-            3 將完成後的資料塞進 datas
-        */   
+
+        // 已讀取
         if ( typeof this.dummyDatas !== "undefined") return console.log( "[*] Data has been loaded");
+
+        // 啟動 loading propertie
         this.loading = true;    
+        // trigger start 讓 dom-if render <iron-jsonp-library>
         this._trigger = true;     
-        var that = this;
-        var j = 0;
-        function loop() {
-            setTimeout(
-                function(t) {
-                    if (typeof this.chtDatas === "undefined" && j < t) {
-                        console.log("loading chtDatas..." + j);
-                        loop();
-                        j++;
-                        return;
-                    }
-                    console.log("load complete!");
-                }, 100);
-        }
-        _.bind( loop, this.properties , 100);
     },
     _chtCallback: function(e) {     
         // 接受 iron jsonp callback notify-event   
@@ -74,13 +66,14 @@ Polymer({
         // "換行" 取代 "逗點"
         for (var i = 0; i < data.length; i++) {
             data[i] = data[i].replace(/，/g, "<br>");
-        }
+        }        
         this.chtDatas = data;
         console.log("[取得中文資料] chtDatas generated");
+        // next step
         this._fetch();
     },
     _fetch: function() {
-        // 取得json資料
+        // 取得 json generator 資料
         var that = this;
         fetch("http://beta.json-generator.com/api/json/get/C-yB2i8")
             .then(function(response) {
@@ -89,12 +82,13 @@ Polymer({
             .then(function(json) {
                 that.dummyDatas = json[0];
                 console.log("[取得JsonGen資料] dummyDatas fetch get complete");
+                // next step
                 that._build();
             });
     },
     /* 產生測試資料 */
     _build: function() {
-        // 插入中文資料
+        // 插入中文資料到 json generator 的資料中
         var that = this;
         _.findKey( this.dummyDatas.articles, function(chr){
             chr.content = that.chtDatas[_.random(0,29)];
@@ -106,9 +100,12 @@ Polymer({
             } );
         });
         console.log( "[處理資料] build complete");
+        // 將資料塞入 datas 裡面
         this.datas = this.dummyDatas;
+        // lazy render
         this.notifyPath( "datas" , this.dummyDatas);
         console.log( "[處理資料] inject this.datas complete");
+        // 完成 loading data
         this.loading = false;
     },
     /* Method */
